@@ -27,11 +27,8 @@ fi
 printf "Directorio busqueda: %s\n" $1
 
 #Punto 3)
-#Idea de Jorge Rodriguez
 
 usePhoneFiles=(`find $searchDir -name '*.txt' -print | sort | grep usePhone | grep -v '._'`)
-
-
 
 #Buscar como hacer archivos temporales en Bash para este tipo, como tambien hacer archivos
 #en memoria ram, es una estrucutra que se trabaja y accede mas rapido
