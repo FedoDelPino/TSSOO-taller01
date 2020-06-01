@@ -24,7 +24,7 @@ fi
 
 printf "Directorio busqueda: %s\n" $1
 
-#Punto 1)
+#Punto 1)===============================================================================================================================================
 
 executionSummary=(`find $searchDir -name '*.txt' -print | sort | grep executionSummary | grep -v '._'`)
 
@@ -49,7 +49,7 @@ do
 
 	memUsed=$(cat $i | tail -n+2 | awk -F ':' 'BEGIN{sumamemoria=0}{sumamemoria=$10;} END{print sumamemoria}')
 	printf "$memUsed \n" >>$tmpFile2
-	memUsed_stats=$(cat $tmpFile2 | awk 'BEGIN{ min=2**53-1; max=0}{if($tmpFile2<min){min=$tmpFile2};\
+	memUsed_stats=$(cat $tmpFile2 | awk 'BEGIN{ min=2**63-1; max=0}{if($tmpFile2<min){min=$tmpFile2};\
 													if($tmpFile2>max){max=$tmpFile2};\
 														total+=$tmpFile2; count+=1;\
 														} \
@@ -57,13 +57,40 @@ do
 done
 printf "%i:%i:%i:%i \n %i:%.2f:%i:%i \n" $tsimTotal_Stats $memUsed_stats >> $OutFileSummaryStats
 
-#Punto 3)
+
+#Punto 2) ==============================================================================================================================================
+
+summaryFiles=(`find $searchDir -name '*.txt' -print | sort | grep summary | grep -v '._'`)
+
+tmpFile3="tmpSummary.txt"
+OutFileSummary="evacuation.txt"
+rm -f $tmpFile3
+rm -f $OutFileSummary
+printf "ALLS:promedio:min:max \n" >> $OutFileSummary
+
+for i in ${summaryFiles[*]};
+do
+	printf '> %s\n' $i
+	#alls=$(`cat $i | tail -n+2  | cut -d ':' -f 8 > printeo.txt`)
+	alls_stats=$(cat $i | tail -n+2 | cut -d ':' -f 8 | awk 'BEGIN{ sumEvacT_All=$i; min=2**63-1; max=0 }{if($i<min){min=$i};\
+											if($i>max){max=$i};\
+											total+=$i; count+=1;\
+											} \
+											 END{ print total, total/count, min, max }' >> $tmpFile3 )
+	#all_final=$(cat $i | awk -f 3
+	printf "%f,%f,%f,%f \n" $tmpFile3
+done
+#less $tmpFile3
+#printf "%.3f:%.4f:%.3f:%.3f \n" $alls >> $OutFileSummary
+
+
+#Punto 3) ==============================================================================================================================================
 
 usePhoneFiles=(`find $searchDir -name '*.txt' -print | sort | grep usePhone | grep -v '._'`)
 
 tmpFile3="DatosTelefonos.txt"
 OutFilePhone="usePhone-stats.txt"
-rm -f $tmpFile3
+rm -f $tmpFile4
 rm -f $OutFilePhone
 printf "timestamp:promedio:min:max \n" >> $OutFilePhone
 
@@ -82,7 +109,7 @@ do
 	printf "0:%.2f:%i:%i \n" $usePhone_stats >> $OutFilePhone
 	rm -f $tmpFile 
 done
-less $tmpFile1
+
 less metrics.txt
 less usePhone-stats.txt
 rm -f $tmpFile1
