@@ -26,6 +26,7 @@ fi
 
 printf "Directorio busqueda: %s\n" $1
 
+#Punto 3)
 #Idea de Jorge Rodriguez
 
 usePhoneFiles=(`find $searchDir -name '*.txt' -print | sort | grep usePhone | grep -v '._'`)
@@ -35,20 +36,27 @@ usePhoneFiles=(`find $searchDir -name '*.txt' -print | sort | grep usePhone | gr
 #Buscar como hacer archivos temporales en Bash para este tipo, como tambien hacer archivos
 #en memoria ram, es una estrucutra que se trabaja y accede mas rapido
 
-tmpFile="fracaso.txt"
+tmpFile="DatosTelefonos.txt"
+OutFilePhone="usePhone-stats.txt"
 rm -f $tmpFile
+rm -f $OutFilePhone
+printf "timestamp:promedio:min:max \n" >> $OutFilePhone
 
 for i in ${usePhoneFiles[*]};
 do
 	printf '> %s\n' $i
-	tiempos=(`cat $i | tail -n+3 | cut -d ':' -f 3`)
+	UsoCelular=(`cat $i | tail -n+3 | cut -d ':' -f 3`)
 
-	for j in ${tiempos[*]};
+	for j in ${UsoCelular[*]};
 	do
-		printf "%d:" $j >> $tmpFile
-		AvgUsePhone=$(cat $tmpFile | cut -d ':' -f 1 | \awk 'BEGIN{total=0; count=0} {total+=$j; count+=1} END{print total/count}')
+		printf "%d:\n" $j >> $tmpFile
+		#Calculamos el promedio, min, max de cada archivo usePhone.txt, solo faltaria timestamp que no me queda claro
+		usePhone_stats=$(cat $tmpFile | cut -d ':' -f 1 | awk 'BEGIN{ min=2**63-1; max=0}{if($j<min){min=$j}};{if($j>max){max=$j}};{total+=$j; count+=1}; END { print total/count, min, max}')
 	done
-	printf "El promedio del archivo %s es : $AvgUsePhone \n" $i
-
-	printf "\n" >> $tmpFile
+	printf "$usePhone_stats \n" 
+	printf "0:%.2f:%i:%i \n" $usePhone_stats >> $OutFilePhone
+	rm -f $tmpFile 
 done
+
+less usePhone-stats.txt
+
