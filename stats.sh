@@ -55,8 +55,8 @@ do
 														} \
 														 END{print total, total/count, min, max}')
 done
-printf "%i:%i:%i:%i \n %i:%.2f:%i:%i \n" $tsimTotal_Stats $memUsed_stats >> $OutFileSummaryStats
-
+printf "%i:%i:%i:%i\n%i:%.2f:%i:%i\n" $tsimTotal_Stats $memUsed_stats >> $OutFileSummaryStats
+rm -f $tmpFile1 $tmpFile2
 
 #Punto 2) ==============================================================================================================================================
 
@@ -66,23 +66,27 @@ tmpFile3="tmpSummary.txt"
 OutFileSummary="evacuation.txt"
 rm -f $tmpFile3
 rm -f $OutFileSummary
-printf "ALLS:promedio:min:max \n" >> $OutFileSummary
+printf "alls:promedio:min:max \n" >> $OutFileSummary
 
 for i in ${summaryFiles[*]};
 do
 	printf '> %s\n' $i
-	#alls=$(`cat $i | tail -n+2  | cut -d ':' -f 8 > printeo.txt`)
-	alls_stats=$(cat $i | tail -n+2 | cut -d ':' -f 8 | awk 'BEGIN{ sumEvacT_All=$i; min=2**63-1; max=0 }{if($i<min){min=$i};\
+	#alls=$(`cat $i | tail -n+2  | cut -d ':' -f 8 > $tmpFile3`)
+	all=$( cat $i| tail -n+2 | cut -d ':' -f 8 | awk 'BEGIN{ sumEvacT_All=$i; min=2**63-1; max=0 }{if($i<min){min=$i};\
 											if($i>max){max=$i};\
 											total+=$i; count+=1;\
 											} \
-											 END{ print total, total/count, min, max }' >> $tmpFile3 )
-	#all_final=$(cat $i | awk -f 3
-	printf "%f,%f,%f,%f \n" $tmpFile3
+											END{ print total,total/count,min,max }')
+	printf "%f:%f:%f:%f\n" $all >> $tmpFile3
+	all_Stats=$( cat $tmpFile3 | awk -F ':' 'BEGIN{ sumaT=$i; mini=2**63-1; maxi=0 }{if($3<mini){mini=$3};\
+											 if($4>maxi){maxi=$4};\
+											 sumaT+=$1; count+=1;\
+											} \
+										 	END{ print sumaT,sumaT/count,mini,maxi}')
 done
-#less $tmpFile3
-#printf "%.3f:%.4f:%.3f:%.3f \n" $alls >> $OutFileSummary
-
+printf "%f:%f:%f:%f\n" $all_Stats >> $OutFileSummary
+printf "residents:promedio:min:max \n" >> $OutFileSummary
+rm -f $tmpFile3
 
 #Punto 3) ==============================================================================================================================================
 
@@ -109,9 +113,9 @@ do
 	printf "0:%.2f:%i:%i \n" $usePhone_stats >> $OutFilePhone
 	rm -f $tmpFile 
 done
+rm -f $tmpFile4
 
 less metrics.txt
+less evacuation.txt
 less usePhone-stats.txt
-rm -f $tmpFile1
-rm -f $tmpFile2
-rm -f $tmpFile3
+
