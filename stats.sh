@@ -92,7 +92,7 @@ rm -f $tmpFile3
 
 usePhoneFiles=(`find $searchDir -name '*.txt' -print | sort | grep usePhone | grep -v '._'`)
 
-tmpFile3="DatosTelefonos.txt"
+tmpFile4="DatosTelefonos.txt"
 OutFilePhone="usePhone-stats.txt"
 rm -f $tmpFile4
 rm -f $OutFilePhone
@@ -105,9 +105,9 @@ do
 
 	for j in ${UsoCelular[*]};
 	do
-		printf "%d:\n" $j >> $tmpFile3
+		printf "%d:\n" $j >> $tmpFile4
 		#Calculamos el promedio, min, max de cada archivo usePhone.txt, solo faltaria timestamp que no me queda claro
-		usePhone_stats=$(cat $tmpFile3 | cut -d ':' -f 1 | awk 'BEGIN{ min=2**63-1; max=0}{if($j<min){min=$j}};{if($j>max){max=$j}};{total+=$j; count+=1}; END { print total/count, min, max}')
+		usePhone_stats=$(cat $tmpFile4 | cut -d ':' -f 1 | awk 'BEGIN{ min=2**63-1; max=0}{if($j<min){min=$j}};{if($j>max){max=$j}};{total+=$j; count+=1}; END { print total/count, min, max}')
 	done
 	printf "$usePhone_stats \n" 
 	printf "0:%.2f:%i:%i \n" $usePhone_stats >> $OutFilePhone
