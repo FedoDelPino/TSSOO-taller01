@@ -1,7 +1,6 @@
 #!/bin/bash 
 
-# La variable # pero el contenido $# es equivalente a argc de c y c++ y python
-# Entonces eso quiere decir que el contenido necesita mas argumentos, por eso
+
 # Comprobamos si tiene mas de 1 argumento, para ubicar el directorio de busqueda
 
 if [ $# != 1 ]; then
@@ -16,13 +15,10 @@ if [ ! -e  $searchDir ]; then
 	exit
 fi
 
-#Comprobar si existe el directorio
 if [ ! -d $searchDir ]; then
 	echo "$1 Es un elemento pero no un Directorio"
 	exit
 fi
-
-printf "Directorio busqueda: %s\n" $1
 
 #Punto 1)===============================================================================================================================================
 
@@ -38,7 +34,6 @@ rm -f $tmpFile2
 printf "tsimTotal:promedio:min:max \n memUsed:promedio:min:max \n" >> $OutFileSummaryStats
 for i in ${executionSummary[*]};
 do
-	printf '> %s\n' $i
 	tsimTotal=$(cat $i | tail -n+2 | awk -F ':' 'BEGIN{sumaTiempo=0}{sumaTiempo=$6+$7+$8} END{print sumaTiempo}')
 	printf "$tsimTotal \n" >>$tmpFile1
 	tsimTotal_Stats=$(cat $tmpFile1 | awk 'BEGIN{ min=2**63-1; max=0}{if($tmpFile1<min){min=$tmpFile1};\
@@ -70,8 +65,6 @@ printf "alls:promedio:min:max \n" >> $OutFileSummary
 
 for i in ${summaryFiles[*]};
 do
-	printf '> %s\n' $i
-	#alls=$(`cat $i | tail -n+2  | cut -d ':' -f 8 > $tmpFile3`)
 	all=$( cat $i| tail -n+2 | cut -d ':' -f 8 | awk 'BEGIN{ sumEvacT_All=$i; min=2**63-1; max=0 }{if($i<min){min=$i};\
 											if($i>max){max=$i};\
 											total+=$i; count+=1;\
@@ -100,7 +93,6 @@ printf "timestamp:promedio:min:max \n" >> $OutFilePhone
 
 for i in ${usePhoneFiles[*]};
 do
-	printf '> %s\n' $i
 	UsoCelular=(`cat $i | tail -n+3 | cut -d ':' -f 3`)
 
 	for j in ${UsoCelular[*]};
@@ -109,13 +101,8 @@ do
 		#Calculamos el promedio, min, max de cada archivo usePhone.txt, solo faltaria timestamp que no me queda claro
 		usePhone_stats=$(cat $tmpFile4 | cut -d ':' -f 1 | awk 'BEGIN{ min=2**63-1; max=0}{if($j<min){min=$j}};{if($j>max){max=$j}};{total+=$j; count+=1}; END { print total/count, min, max}')
 	done
-	printf "$usePhone_stats \n" 
 	printf "0:%.2f:%i:%i \n" $usePhone_stats >> $OutFilePhone
 	rm -f $tmpFile 
 done
 rm -f $tmpFile4
-
-less metrics.txt
-less evacuation.txt
-less usePhone-stats.txt
 
