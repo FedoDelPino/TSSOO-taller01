@@ -20,7 +20,11 @@ if [ ! -d $searchDir ]; then
 	exit
 fi
 
+
+
 #Punto 1)===============================================================================================================================================
+
+printf "Ejecutando Tarea 1\n"
 
 executionSummary=(`find $searchDir -name '*.txt' -print | sort | grep executionSummary | grep -v '._'`)
 
@@ -55,6 +59,8 @@ rm -f $tmpFile1 $tmpFile2
 
 #Punto 2) ==============================================================================================================================================
 
+printf "Ejecutando Tarea 2\n"
+
 summaryFiles=(`find $searchDir -name '*.txt' -print | sort | grep summary | grep -v '._'`)
 
 tmpFile3="tmpSummary.txt"
@@ -83,6 +89,8 @@ rm -f $tmpFile3
 
 #Punto 3) ==============================================================================================================================================
 
+printf "Ejecutando Tarea 3\n"
+
 usePhoneFiles=(`find $searchDir -name '*.txt' -print | sort | grep usePhone | grep -v '._'`)
 
 tmpFile4="DatosTelefonos.txt"
@@ -106,3 +114,4 @@ do
 done
 rm -f $tmpFile4
 
+printf "Correcta Finalizacion, visualice archivos de salida\n"
