@@ -81,9 +81,9 @@ all=$( cat $i| tail -n+2 | cut -d ':' -f 8 | awk 'BEGIN{ sumEvacT_All=$i; min=2*
 
 Asignando a la variable "`all`" el contenido de la concatenacion del contenido de cada archivo "`summary.txt`", donde mediante el comando `tail` se tomará todo el contenido por debajo de la primera linea de los archivos de lectura, y, `cut`, se encargará de tomar el octavo item de cada columna (items separados por ":").
 
-Tras esto, se procedera a tomar el archivo temporal actual, para calcular de forma total, el promedio de los promedios, el maximo de los maximos y el minimo de los minimos de todas las personas simuladas, almacenando este total dentro del archivo de salida "`evacuation.txt`".
+Tras esto, se procedera a tomar el archivo temporal actual, para calcular de forma total, el promedio de los promedios, el maximo de los maximos y el minimo de los minimos de todas las personas simuladas, almacenando este total dentro del archivo de salida "`evacuation.txt`", para luego hacer algo similar a la hora de filtrar cada tipo de persona considerando tambien el grupo etario..
 
-> Como nota: La completacion de esta tarea pudo lograrse considerando un mayor tiempo iterativo y de codificacion en cuanto al mismo patron de comandos, calculando y almacenando la informacion en varios archivos temporales, los cuales serian ingresados como una nueva linea en el archivo de salida, a lo que por problemas de tiempo y procedimientos no se llevo a cabo.
+> Como nota: La completacion de esta tarea se realizo correctamente, pero se entiende que pudo haberse logrado en muchas menos lineas de codigo si se utilizara de mejor manera los comandos de concatenacion y filtrado de datos..
 
 ### 3.4 Tarea 3.
 
@@ -109,7 +109,7 @@ Como observacion, no se busco implementar el mejor desempeño de cada linea codi
 Se puede apreciar que el cumplimiento del taller no abarco por completo ciertos aspectos:
 
 ```diff
-- Completación Tarea 2
+- Optimización de lineas de codigo
 - Cierto entendimiento del formato de salida de algunos archivos
 ```
 
@@ -117,7 +117,7 @@ Aunque tambien es cierto que el proceso de aprendizaje fue logrado para la compl
 
 ```diff
 + Finalización Tarea 1
-+ Semi-Completación Tarea 2
++ Finalización Tarea 2
 + Finalización Tarea 3
 + Manejo de Directorios y archivos
 + Uso de comandos para filtrado de información
