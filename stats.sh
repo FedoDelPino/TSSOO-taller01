@@ -58,7 +58,7 @@ do
 													} \
 													END{ print total, total/count, min, max }')
 
-	memUsed=$(cat $i | tail -n+2 | awk -F ':' 'BEGIN{sumamemoria=0}{sumamemoria=$10;} END{print sumamemoria}')
+	memUsed=$(cat $i | tail -n+2 | awk -F ':' 'BEGIN{sumamemoria=0}{sumamemoria=$9;} END{print sumamemoria}')
 	printf "$memUsed \n" >>$tmpFile2
 	memUsed_stats=$(cat $tmpFile2 | awk 'BEGIN{ min=2**63-1; max=0}{if($tmpFile2<min){min=$tmpFile2};\
 													if($tmpFile2>max){max=$tmpFile2};\
