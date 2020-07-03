@@ -104,7 +104,7 @@ Tras completar el primer bucle se elimina el archivo temporal actual de la tarea
 
 Todo este programa esta basado en su implementacion dentro de un sistema operativo basado en Linux, es muy posible que ciertas caracteristicas no sean del todo correctas para otros sistemas operativos y ciertas funcionalidades del programa no sean eficazmente logradas.
 
-Como observacion, no se busco implementar el mejor desempeño de cada linea codificada, pero se entendia que algunas estructuras pudieron escribirse de distinta manera quizas mas acortada, correspondiente al uso de buenas practicas.
+Como observacion, no se busco implementar el mejor desempeño de cada linea codificada, pero se entendia que algunas estructuras pudieron escribirse de distinta manera quizas mas acortada, analizando la utilización de funciones que realicen el cálculo estadístico y cada tarea llame a esta función cuando la necesite utilizar, lo que seria mucho más optímo, correspondiente claro, al mejor uso del lenguaje Bash y a menor uso de líneas de comandos.
 
 Se puede apreciar que el cumplimiento del taller no abarco por completo ciertos aspectos:
 
